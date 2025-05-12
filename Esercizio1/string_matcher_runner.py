@@ -46,8 +46,6 @@ if __name__ == "__main__":
     text1 = (
         "ABBA" *100 + "BABBA"*100
     )
-    
-    # Pattern complesso con ripetizioni parziali
     pattern1 = "AB"
     
     runner1 = MatcherTestRunner(text1, pattern1)
@@ -56,8 +54,6 @@ if __name__ == "__main__":
     text2 = (
         "DADDA" *100 + "ADDA"*100
     )
-    
-    # Pattern complesso con ripetizioni parziali
     pattern2 = "AD"
     
     runner2 = MatcherTestRunner(text2, pattern2)
