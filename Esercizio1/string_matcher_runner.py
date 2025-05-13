@@ -28,163 +28,112 @@ class MatcherTestRunner:
             duration = time.perf_counter() - start
             print(f"{name:<6}: {len(result)} corrispondenze, {comparisons} confronti, {duration:.6f}s")
             results.append((name, len(result), comparisons, duration))
-            
-        highlighted_text = self.text
-        offset = 0  # Offset per gestire l'aumento della lunghezza del testo con le parentesi
-        for match_start in sorted(set(result)):  # Evita duplicati e ordina i match
-            match_start += offset
-            match_end = match_start + len(self.pattern)
-            highlighted_text = (
-                highlighted_text[:match_start] +
-                "[" + highlighted_text[match_start:match_end] + "]" +
-                highlighted_text[match_end:]
-            )
-            offset += 2  # Aggiungi 2 per le parentesi quadre
 
-        print("\nTesto evidenziato:")
-        print(highlighted_text)
         return results
 
-
-
-
-
-def generate_continuous_graphs():
-    # Casi di test per i 6 scenari descritti
-    cases = [
-        {"label": "Lunghezza del testo", "vary": "text"},
-        {"label": "Lunghezza del pattern", "vary": "pattern"},
-        {"label": "Numero di confronti", "vary": "comparisons"},
-        {"label": "Rapporto testo/pattern", "vary": "ratio"},
-        {"label": "Posizione del pattern", "vary": "position"},
-        {"label": "Densità di match", "vary": "density"},
+def generate_custom_graphs():
+    test_cases = [
+        {"label": "Tempo di esecuzione", "x_label": "Lunghezza testo", "vary": "text_length"},
+        {"label": "Confronti effettuati", "x_label": "Lunghezza pattern", "vary": "pattern_length"},
+        {"label": "Tempo vs Confronti", "x_label": "Numero confronti", "vary": "comparisons_vs_time"},
+        {"label": "Numero di match", "x_label": "Lunghezza testo", "vary": "matches_vs_text"},
+        {"label": "Tempo per match", "x_label": "Lunghezza testo", "vary": "time_per_match"},
+        {"label": "Confronti per match", "x_label": "Lunghezza testo", "vary": "comparisons_per_match"},
     ]
 
-    for case in cases:
+    for case in test_cases:
         label = case["label"]
+        x_label = case["x_label"]
         vary = case["vary"]
 
-        naive_times = []
-        kmp_times = []
         x_axis = []
+        naive_ys = []
+        kmp_ys = []
 
-        if vary == "text":
-            # Varia la lunghezza del testo
-            length = 1
-            pattern = "ABBA"
-            while length < 1001:
-                text = "BABABBA" * (length // len("BABABBA"))
-                runner = MatcherTestRunner(text, pattern)
-                results = runner.run_tests()
+        if vary == "text_length":
+            pattern = "ABCD"
+            for length in range(100, 1001, 100):
+                text = "ABCD" * (length // 4)
+                results = MatcherTestRunner(text, pattern).run_tests()
                 x_axis.append(length)
                 for name, _, _, duration in results:
                     if name == "Ingenuo":
-                        naive_times.append(duration)
+                        naive_ys.append(duration)
                     elif name == "KMP":
-                        kmp_times.append(duration)
-                length += 50
+                        kmp_ys.append(duration)
 
-        elif vary == "pattern":
-            # Varia la lunghezza del pattern
-            length = 1
+        elif vary == "pattern_length":
             text = "A" * 1000
-            while length < 101:
+            for length in range(1, 101, 10):
                 pattern = "A" * length
-                runner = MatcherTestRunner(text, pattern)
-                results = runner.run_tests()
+                results = MatcherTestRunner(text, pattern).run_tests()
                 x_axis.append(length)
-                for name, _, _, duration in results:
+                for name, _, comparisons, _ in results:
                     if name == "Ingenuo":
-                        naive_times.append(duration)
+                        naive_ys.append(comparisons)
                     elif name == "KMP":
-                        kmp_times.append(duration)
-                length += 10
+                        kmp_ys.append(comparisons)
 
-        elif vary == "comparisons":
-            # Varia la lunghezza del testo e raccogli i confronti e il tempo
-            length = 100
-            pattern = "A" * 10
-            while length <= 1000:
-                text = "A" * length
-                runner = MatcherTestRunner(text, pattern)
-                results = runner.run_tests()
+        elif vary == "comparisons_vs_time":
+            text = "A" * 1000
+            for length in range(10, 101, 10):
+                pattern = "A" * length
+                results = MatcherTestRunner(text, pattern).run_tests()
                 for name, _, comparisons, duration in results:
                     if name == "Ingenuo":
-                        x_axis.append(comparisons)  # Numero di confronti
-                        naive_times.append(duration)  # Tempo
+                        x_axis.append(comparisons)
+                        naive_ys.append(duration)
                     elif name == "KMP":
-                        kmp_times.append(duration)  # Tempo
-                length += 100
-
-        elif vary == "ratio":
-            # Varia il rapporto lunghezza testo/pattern
-            ratio = 1
-            while ratio < 11:
-                text = "A" * (100 * ratio)
-                pattern = "A" * 100
-                runner = MatcherTestRunner(text, pattern)
-                results = runner.run_tests()
-                x_axis.append(ratio)
-                for name, _, _, duration in results:
+                        kmp_ys.append(duration)
+        
+        elif vary == "matches_vs_text":
+            pattern = "AB"
+            for length in range(100, 1001, 100):
+                text = (pattern + "C") * (length // 3)
+                results = MatcherTestRunner(text, pattern).run_tests()
+                x_axis.append(length)
+                for name, matches, _, _ in results:
                     if name == "Ingenuo":
-                        naive_times.append(duration)
+                        naive_ys.append(matches)
                     elif name == "KMP":
-                        kmp_times.append(duration)
-                ratio += 1
+                        kmp_ys.append(matches)
 
-        elif vary == "position":
-            # Varia la posizione del pattern
-            text = "A" * 1000
-            for position in ("start", "middle", "end"):
-                if position == "start":
-                    pattern = "AAA"
-                    text = pattern + "A" * 997
-                elif position == "middle":
-                    pattern = "AAA"
-                    text = "A" * 498 + pattern + "A" * 499
-                elif position == "end":
-                    pattern = "AAA"
-                    text = "A" * 997 + pattern
-                runner = MatcherTestRunner(text, pattern)
-                results = runner.run_tests()
-                x_axis.append(position)
-                for name, _, _, duration in results:
+        elif vary == "time_per_match":
+            pattern = "AB"
+            for length in range(100, 1001, 100):
+                text = (pattern + "C") * (length // 3)
+                results = MatcherTestRunner(text, pattern).run_tests()
+                x_axis.append(length)
+                for name, matches, _, duration in results:
+                    value = duration / matches if matches else 0
                     if name == "Ingenuo":
-                        naive_times.append(duration)
+                        naive_ys.append(value)
                     elif name == "KMP":
-                        kmp_times.append(duration)
+                        kmp_ys.append(value)
 
-        elif vary == "density":
-            # Varia la densità di match
-            density = 1
-            while density < 11:
-                pattern = "A" * 10
-                text = (pattern + "B" * 10) * density
-                runner = MatcherTestRunner(text, pattern)
-                results = runner.run_tests()
-                x_axis.append(density)
-                for name, _, _, duration in results:
+        elif vary == "comparisons_per_match":
+            pattern = "AB"
+            for length in range(100, 1001, 100):
+                text = (pattern + "C") * (length // 3)
+                results = MatcherTestRunner(text, pattern).run_tests()
+                x_axis.append(length)
+                for name, matches, comparisons, _ in results:
+                    value = comparisons / matches if matches else 0
                     if name == "Ingenuo":
-                        naive_times.append(duration)
+                        naive_ys.append(value)
                     elif name == "KMP":
-                        kmp_times.append(duration)
-                density += 1
+                        kmp_ys.append(value)
 
-        # Genera il grafico per il caso corrente
-        if len(x_axis) == len(naive_times) == len(kmp_times):  # Assicurati che le liste abbiano la stessa lunghezza
-            plt.figure(figsize=(8, 5))
-            plt.plot(x_axis, naive_times, label="Naive Matcher", marker="o", color="blue")
-            plt.plot(x_axis, kmp_times, label="KMP Matcher", marker="s", color="orange")
-            plt.xlabel(label)
-            plt.ylabel("Tempo (s)")
-            plt.title(f"Confronto: Tempo vs {label}")
-            plt.legend()
-            plt.grid(True)
-            plt.tight_layout()
-            plt.show()
-        else:
-            print(f"ERROR: Dimensioni non corrispondenti per {label}")
-
+        plt.figure(figsize=(8, 5))
+        plt.plot(x_axis, naive_ys, label="Naive Matcher", marker="o", color="blue")
+        plt.plot(x_axis, kmp_ys, label="KMP Matcher", marker="s", color="orange")
+        plt.xlabel(x_label)
+        plt.ylabel(label)
+        plt.title(f"Confronto: {label} in funzione di {x_label}")
+        plt.legend()
+        plt.grid(True)
+        plt.tight_layout()
+        plt.show()
 
 if __name__ == "__main__":
-    generate_continuous_graphs()
+    generate_custom_graphs()
