@@ -1,6 +1,7 @@
 import time
 import string
 import random
+import os
 import matplotlib.pyplot as plt
 from naive_string_matcher import NaiveMatcher
 from KMP_string_matcher import KMPMatcher
@@ -51,6 +52,9 @@ def generate_custom_graphs():
         {"label": "Tempo di esecuzione", "x_label": "Lunghezza testo (casuale)", "vary": "random_text_vs_time"},
         {"label": "Tempo preprocessing KMP", "x_label": "Lunghezza pattern", "vary": "kmp_preprocessing"},
     ]
+
+    output_dir = "img"
+    os.makedirs(output_dir, exist_ok=True)
 
     for case in test_cases:
         label = case["label"]
@@ -287,7 +291,10 @@ def generate_custom_graphs():
         plt.legend()
         plt.grid(True)
         plt.tight_layout()
-        plt.show()
+        # Salva il grafico
+        filename = f"grafico_{vary}.png"
+        plt.savefig(os.path.join(output_dir, filename))
+        plt.close()
 
 if __name__ == "__main__":
     generate_custom_graphs()
