@@ -1,3 +1,4 @@
+from typing import override
 from string_matcher import StringMatcher
 
 class KMPMatcher(StringMatcher):
@@ -15,6 +16,7 @@ class KMPMatcher(StringMatcher):
             pi[q] = k
         return pi
 
+    @override
     def search(self, T: str, P: str):
         n = len(T)
         m = len(P)

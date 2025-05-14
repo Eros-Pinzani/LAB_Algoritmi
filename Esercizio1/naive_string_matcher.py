@@ -1,6 +1,8 @@
+from typing import override
 from string_matcher import StringMatcher
 
 class NaiveMatcher(StringMatcher):
+    @override
     def search(self, T: str, P: str):
         n = len(T)
         m = len(P)
