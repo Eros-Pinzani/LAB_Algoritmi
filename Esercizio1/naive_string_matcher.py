@@ -9,7 +9,7 @@ class NaiveMatcher(StringMatcher):
         matches = []
         comparisons = 0
 
-        for s in range(n - m + 1):  # riga 3
+        for s in range(n - m + 1):
             match = True
             for j in range(m):
                 comparisons += 1
