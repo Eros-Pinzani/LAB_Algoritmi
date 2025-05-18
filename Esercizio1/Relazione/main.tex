@@ -85,10 +85,10 @@
 Per ogni esercizio suddividiamo la sua descrizione in 4 parti fondamentali:
 
 \begin{itemize}
-    \item \textbf{Spiegazione teorica del problema} : qui è dove si descrive il problema che andremo ad affrontare in modo teorico partendo dagli assunti del libro di Algoritmi e Strutture Dati e da altre fonti.
-    \item \textbf{Documentazione del codice} : in questa parte spieghiamo come il codice dell'esercizio viene implementato.
-    \item \textbf{Descrizione degli esperimenti condotti} : partendo dal codice ed effettuando misurazioni varie cerchiamo di verificare le ipotesi teoriche.
-    \item \textbf{Analisi dei risultati sperimentali} : dopo aver svolto i vari esperimenti riflettiamo sui vari risultati ed esponiamo una tesi.
+    \item \textbf{Spiegazione teorica del problema}: qui è dove si descrive il problema che andremo ad affrontare in modo teorico partendo dagli assunti del libro di Algoritmi e Strutture Dati e da altre fonti.
+    \item \textbf{Documentazione del codice}: in questa parte spieghiamo come il codice dell'esercizio viene implementato.
+    \item \textbf{Descrizione degli esperimenti condotti}: partendo dal codice ed effettuando misurazioni varie cerchiamo di verificare le ipotesi teoriche.
+    \item \textbf{Analisi dei risultati sperimentali}: dopo aver svolto i vari esperimenti riflettiamo sui vari risultati ed esponiamo una tesi.
 \end{itemize}
 
 \subsection{Specifiche della piattaforma di test}
@@ -100,7 +100,7 @@ La piattaforma di test sarà la stessa per ogni esercizio che vedremo. Partiamo 
     \item \textbf{SSD} : 512 GB M.2 2280 PCIe Gen4 TLC Opal
 \end{itemize}
 
-Il linguaggio di programmazione utilizzato sarà Python e la piattaforma in cui il codice è stato scritto e 'girato' è l'IDE \textbf{Visual Studio Code}. La stesura di questo testo è avvenuta tramite l'utilizzo di \textbf{Visual Studio Code} e opportune estensioni.
+\noindent Il linguaggio di programmazione utilizzato sarà Python e la piattaforma in cui il codice è stato scritto e 'girato' è l'IDE \textbf{Visual Studio Code}. La stesura di questo testo è avvenuta tramite l'utilizzo di \textbf{Visual Studio Code} e opportune estensioni.
 
 \newpage
 
@@ -133,10 +133,10 @@ Nella seguente parte della relazione viene descritta l'implementazione degli alg
 
 \subsection{Cos'è un algoritmo di string matching?}
 Gli algoritmi di string matching sono algoritmi che permettono di trovare una o più occorrenze di una stringa, chiamata \textbf{pattern}, all'interno di un'altra stringa, chiamata \textbf{testo}. Questi algoritmi sono utilizzati in molti campi, ad esempio nella ricerca di pattern in sequenze di DNA oppure vengono utilizzati da motori di ricerca per individuare pagine web pertinenti alle query.
-Andiamo ora ad analizzare nel dettagli gli algoritmi ``\textbf{ingenuo}'' e \textbf{KMP} osservando che a parità di occorrenze del pattern trovate il secondo algoritmo risulta essere più efficiente del primo.
+Andiamo ora ad analizzare nel dettaglio gli algoritmi ``\textbf{ingenuo}'' e \textbf{KMP} osservando che a parità di occorrenze del pattern trovate il secondo algoritmo risulta essere più efficiente del primo.
 
 \subsubsection{Algoritmo ``ingenuo''}
-L'algoritmo ``\textbf{ingenuo}'' è il più semplice da implementare e consiste nel confrontare il pattern con ogni sottostringa del testo di lunghezza uguale al pattern. In questo modo, l'algoritmo scorre il testo e per ogni posizione confronta il pattern con la sottostringa del testo. Se i caratteri corrispondono, l'algoritmo continua a confrontare i caratteri successivi fino a quando non trova una occorrenza completa o un carattere diverso. In caso di occorrenza completa, l'algoritmo registra la posizione in cui è stata trovata la occorrenza.
+L'algoritmo ``\textbf{ingenuo}'' è il più semplice da implementare e consiste nel confrontare il pattern con ogni sottostringa del testo di lunghezza uguale al pattern. In questo modo, l'algoritmo scorre il testo e per ogni posizione confronta il pattern con la sottostringa del testo. Se i caratteri corrispondono, l'algoritmo continua a confrontare i caratteri successivi fino a quando non trova una occorrenza completa o un carattere diverso. In caso di occorrenza completa, l'algoritmo registra la posizione in cui è stata trovata l'occorrenza.
 \begin{itemize}
     \item Pseudocodice:
           \begin{figure}[H]
@@ -153,6 +153,7 @@ L'algoritmo ``\textbf{ingenuo}'' è il più semplice da implementare e consiste 
               \caption{Pseudocodice dell'algoritmo ``ingenuo''}
               \label{fig:naive-pseudocode}
           \end{figure}
+    \vspace{0.5cm}
     \item Descrizione dell'algoritmo:
           \begin{enumerate}
               \item L'algoritmo inizia salvando le lunghezze del testo e del pattern nelle rispettive variabili \textit{n} e \textit{m}.
@@ -163,7 +164,7 @@ L'algoritmo ``\textbf{ingenuo}'' è il più semplice da implementare e consiste 
     \item Implementazione:
           \begin{figure}[H]
               \centering
-              \includegraphics[width=0.4\textwidth]{img/Naive_search.png}
+              \includegraphics[width=0.3\textwidth]{img/Naive_search.png}
               \caption{Implementazione Python dell'algoritmo ``ingenuo''}
               \label{fig:naive-implementation}
           \end{figure}
@@ -172,12 +173,11 @@ L'algoritmo ``\textbf{ingenuo}'' è il più semplice da implementare e consiste 
               \item Semplicità di implementazione
               \item Efficace per casi semplici e non ripetitivi
               \item Nessuna pre-elaborazione del pattern
-              \item Basso consumo di memoria
           \end{itemize}
 \end{itemize}
 
 \subsubsection{Algoritmo KMP}
-L'algoritmo \textbf{KMP} è un algoritmo di string matching più avanzato rispetto a quello ``\textbf{ingenuo}'' che evita confronti ridondanti. Attraverso una fase preliminare in cui viene analizzato il pattern l'algoritmo costruisce una struttura ausiliaria chiamata \textbf{funzione prefisso $\pi$} grazie alla quale, durante la fase di ricerca, in caso di discordanza tra pattern e testo, permette di saltare alcuni confronti inutili e determinare il punto da cui continuare la ricerca.\\
+L'algoritmo \textbf{KMP} è un algoritmo più avanzato rispetto a quello ``\textbf{ingenuo}'' perché evita confronti ridondanti. Inizialmente viene analizzato il pattern e l'algoritmo costruisce una struttura ausiliaria chiamata \textbf{funzione prefisso $\pi$} grazie alla quale, durante la fase di ricerca, in caso di discordanza tra pattern e testo, permette di saltare alcuni confronti inutili.\\
 La funzione prefisso $\pi$ associa ad ogni posizione \textit{i} del pattern il numero massimo di caratteri iniziali (prefisso) che coincidono con un suffisso della sottostringa del pattern P[1...\textit{i}]. Ovvero, $\pi[i]$ rappresenta la lunghezza del più lungo prefisso del pattern che è anche un suffisso di P[1...\textit{i}]. È grazie a questa funzione che l'algoritmo stabilisce di quanto può essere traslato in avanti il pattern, continuando a mantenere allineati i caratteri già confrontati.
 \begin{itemize}
     \item Pseudocodice:
@@ -237,7 +237,7 @@ La funzione prefisso $\pi$ associa ad ogni posizione \textit{i} del pattern il n
               \item Viene poi calcolata la funzione dei prefissi per il pattern e salvato il risultato nella variabile $\pi$.
               \item Viene inizializzata la variabile \textit{q}, cioè il numero di caratteri del pattern che sono stati trovati nel testo.
               \item Si scorre il testo da 1 a \textit{n}, analizzando ogni carattere.
-              \item Se viene trovata una disordanza tra il prossimo carattere del pattern e quello corrente del testo, viene utilizzata $\pi$ per saltare ad una posizione precedente del pattern che potrebbe produrre un pattern evcitando confronti ridondanti.
+              \item Se viene trovata una discordanza tra il prossimo carattere del pattern e quello corrente del testo, viene utilizzata $\pi$ per saltare ad una posizione precedente del pattern che potrebbe produrre un pattern evitando confronti ridondanti.
               \item Se viene trovata una corrispondenza tra il prossimo carattere del pattern e quello corrente del testo, \textit{q} viene incrementato di 1, indicando che è stato trovato un nuovo carattere del pattern.
               \item Se \textit{q} è uguale alla lunghezza del pattern, significa che è stata trovata un'occorrenza completa del pattern nel testo. In tal caso, viene stampata la posizione in cui è stata trovata l'occorrenza e \textit{q} viene aggiornato al valore di $\pi[q]$, cioè al valore del precedente prefisso memorizzato per poter continuare la ricerca da dove è possibile trovare un nuovo match.
           \end{enumerate}
@@ -265,6 +265,8 @@ Analizziamo adesso gli algoritmi di string matching ``\textbf{ingenuo}'' e \text
     \item \textbf{Algoritmo KMP}: utilizza la funzione dei prefissi per evitare confronti ridondanti. La complessità temporale dell'algoritmo nel caso medio e nel peggiore è $\Theta(n + m)$, cioè una complessità \textbf{lineare}, dove \textit{n} è la lunghezza del testo e \textit{m} è la lunghezza del pattern. Questo lo rende molto più efficiente rispetto all'algoritmo ``ingenuo'' in casi di pattern ripetitivi o con molte occorrenze nel testo.
 \end{itemize}
 I test verranno effettuati su più scenari andando a variare la lunghezza del testo e del pattern, la densità delle occorrenze e la composizione stessa del pattern e del testo.
+\newpage
+\noindent Di seguito è rappresentata la tabella riassuntiva delle complessità degli algoritmi analizzati:
 \begin{figure}[H]
     \begin{table}[H]
         \centering
@@ -282,8 +284,8 @@ I test verranno effettuati su più scenari andando a variare la lunghezza del te
 \newpage
 \section{Documentazione del codice}
 \subsection{Schema del contenuto e interazione tra i moduli}
-Per svolgere i nostri esperimenti ho, prima di tutto, scritto il codice degli algoritmii a cui faremoriferimento. In questo caso le classi hanno nome \textbf{NaiveMatcher} per l'algoritmo ``ingenuo'' e \textbf{KMPMatcher} per quello KMP. La classe \textbf{StringMatcher} è una classe astratta da cui ereditano le due classi precedenti, attraverso questa posso chiamare il metodo \textbf{\textit{search}} per effettuare la ricerca del pattern all'interno del testo.\\
-Ho inoiltre implementato la classe \textbf{MatcherTestRunner} che si occupa di chiamare gli algoritmi passando i giusti dati, tenere conto del tempo impiegato e salvare i risultati. Nello stesso pacchetto di quest'ultima classe ho implementato anche la funzione \textbf{\textit{generate\_custom\_graphs}} che va a effetturare gli effettivi test richiamando la classe \textbf{MatcherTestRunner} e genera i relativi grafici.
+Per svolgere i nostri esperimenti ho, prima di tutto, scritto il codice degli algoritmi a cui faremo riferimento. In questo caso le classi hanno nome \textbf{NaiveMatcher} per l'algoritmo ``ingenuo'' e \textbf{KMPMatcher} per quello KMP. La classe \textbf{StringMatcher} è una classe astratta da cui ereditano le due classi precedenti, attraverso questa posso chiamare il metodo \textbf{\textit{search}} per effettuare la ricerca del pattern all'interno del testo.\\
+Ho inoltre implementato la classe \textbf{MatcherTestRunner} che si occupa di chiamare gli algoritmi passando i giusti dati, tenere conto del tempo impiegato e salvare i risultati. Nello stesso pacchetto di quest'ultima classe ho implementato anche la funzione \textbf{\textit{generate\_custom\_graphs}} che va a effetturare gli effettivi test richiamando la classe \textbf{MatcherTestRunner} e genera i relativi grafici.
 \begin{figure}[H]
     \centering
     \includegraphics[width=1\textwidth]{img/UML.png}
@@ -292,27 +294,60 @@ Ho inoiltre implementato la classe \textbf{MatcherTestRunner} che si occupa di c
 \end{figure}
 
 \subsection{Descrizione dei metodi implementati}
-In questa parte descriver`o le funzionalit`a di ogni metodo delle classi di cui finora abbiamo parlato.
+In questa parte descriverò le funzionalità di ogni metodo delle classi di cui finora abbiamo parlato.
 \begin{itemize}
     \item \textbf{StringMatcher}:
     \begin{itemize}
-        \item \textbf{search(self, T: str, P: str)}:
+        \item \textbf{search(self, T: str, P: str)}: Questo metodo è astratto e fa parte di una classe a sua volta astratta. Definisce in questo modo l'interfaccia comune per tutti gli algoritmi di string matching. Ogni algoritmo specifico dovrà implementare questo metodo per eseguire la ricerca del pattern nel testo.\\
+        Attraverso questa astrazione il codice diventa più modulare e permette di aggiungere facilmente nuovi algoritmi senza necessità di ulteriori modifiche.
     \end{itemize}
-    \item \textbf{NaiveMatcher}:
+    \item \textbf{NaiveMatcher}
     \begin{itemize}
-        \item \textbf{search(self, T: str, P: str)}:
+        \item \textbf{search(self, T: str, P: str)}: Questo metodo effettua l'override del metodo \textbf{search} della classe astratta \textbf{StringMatcher}.\\
+        Implementa l'algoritmo di confronto stringhe ``ingenuo''. Scorre il testo posizione per posizione e confronta carattere per carattere con il pattern.
+        Restituisce una lista delle posizioni in cui il pattern viene trovato all'interno del testo e il numero totale di confronti effettuati.
+        La complessità nel caso peggiore è $O((n - m + 1) \cdot m)$, dove n è la lunghezza del testo e m la lunghezza del pattern.
     \end{itemize}
-    \item \textbf{KMPMatcher}:
+    \item \textbf{KMPMatcher}
     \begin{itemize}
-        \item \textbf{compute\_prefix\_function(self, P: str)}:
-        \item \textbf{search(self, T: str, P: str)}:
+        \item \textbf{compute\_prefix\_function(self, P: str)}: È un metodo ausiliario che calcola la funzione dei prefissi per il pattern. $\pi[q]$ è un array ausiliario che per ogni posizione del pattern memorizza la lunghezza del più lungo prefisso del pattern che è anche un suffisso della sottostringa P[1...\textit{q}]. Ciò consente all'algoritmo di evitare confronti ridondanti durante la ricerca.
+        \item \textbf{search(self, T: str, P: str)}: Questo metodo effettua l'override del metodo \textbf{search} della classe astratta \textbf{StringMatcher}.\\
+        Implementa l'algoritmo Knuth-Morris-Pratt per il confronto tra stringhe. Utilizza l'array $\pi[q]$ per determinare in maniera efficiente come muoversi all'interno del testo durante la ricerca del pattern evitando ripetizioni.
+        Restituisce le posizioni in cui il pattern è presente nel testo e il numero di confronti effettuati.
+        La complessità temporale è $\Theta(n + m)$ , più efficiente dell'approccio ``ingenuo'' specialmente per pattern lunghi o testi ripetitivi.
     \end{itemize}
-    \item \textbf{MatcherTestRunner}:
+    \item \textbf{MatcherTestRunner}
     \begin{itemize}
-        \item \textbf{\_\_init\_\_(self, text, pattern)}:
-        \item \textbf{run\_test(self)}:
-        \item \textbf{generate\_custom\_graphs()}:
+        \item \textbf{\_\_init\_\_(self, text, pattern)}:inizializza l'istanza con il testo e il pattern da cercare e prepara gli oggetti per gli algoritmi di string matching.
+        \item \textbf{run\_test(self)}: È il metodo principale che esegue il test di string matching. Chiama i metodi \textbf{search} degli oggetti \textbf{NaiveMatcher} passando il testo e il pattern. Registra quindi il tempo impiegato per ciascun algoritmo, il numero di confronti effettuati e il numero di occorrenze trovate. Restituisce un dizionario con i risultati per entrambi gli algoritmi da utilizzare per la generazione dei grafici.
+        \item \textbf{generate\_custom\_graphs()}: Questo metodo genera i grafici per visualizzare i risultati dei test. Al suo interno sono contenuti gli effettivi test da eseguire che vanno a definire il testo e il pattern da utilizzare nella ricerca. Chiama quindi per ogni test il metodo \textbf{run\_test}. Inoltre ogni caso ha al suo interno due cicli for: uno necessario per variare le dimensioni del test o del pattern in modo da ottenere un grafico più completo, l'altro per fare una media dei risultati ottenuti in modo da eliminare dal grafico finale eventuali picchi dovuti al fatto che i tempi di ricerca sono molto piccoli.
     \end{itemize}
 \end{itemize}
+
+\newpage
+
+\section{Descrizione degli esperimenti condotti e analisi dei risultati sperimentali}
+\subsection{Dati utilizzati}
+Per effettuare una valutazione sperimentale delle prestazioni degli algoritmi analizzati sono stati progettati otto casi di test, ognuno mirato a studiare uno specifico aspetto dell'efficienza e del comportamento degli algoritmi.\\
+I dati sono stati generati in modo pianificato per garantire che ogni test generasse un grafico utile e significativo.\\
+Di seguito vediamo i vari test effettuati:
+\begin{enumerate}
+    \item \textbf{Tempo vs lunghezza testo}: Misura l'andamento temporale al crescere della dimensione del testo.
+    \item \textbf{Confronti vs lunghezza testo}: Valuta il numero di confronti effettuati al variare della lunghezza del testo.
+    \item \textbf{Caso peggiore}: Calcola il numero di confronti nel caso peggiore (pattern quasi uguale al testo).
+    \item \textbf{Sovrapposizioni del pattern}: Guarda il numero di confronti con match sovrapposti.
+    \item \textbf{Tempo vs lunghezza pattern}: Misura l'andamento temporale al crescere della dimensione del pattern.
+    \item \textbf{Confronti vs densità di match}: Analizza il comportamento in testi misti.
+    \item \textbf{Testi casuali vs testi ripetitivi}: Confronta l'efficienza degli algoritmi nei casi di testi casuali e di quelli ripetitivi.
+    \item \textbf{Tempo di preprocessing KMP}: Analizza il tempo di preprocessing dell'algoritmo KMP al variare della lunghezza del pattern.
+\end{enumerate}
+In particolare notiamo come nei casi 1, 2 e 3 vengono usati testi creati come concatenazioni ripetute di una stringa base e pattern fissi.\\
+Nel test 3, il caso peggiore, il pattern è stato creato in modo tale da essere quasi uguale al testo, differisce in un solo carattere alla fine, andando a obbligare l'algoritmo ``ingenuo'' aripetere quasi tutti i confronti fino alla fine del testo.\\
+Il caso 4 utilizza pattern sovrappposti che evidenziano la capacità dell'algoritmo KMP di evitare confronti ridondanti.\\
+Il test 7 confronta l'efficienza su un testo completamente casuale e uno totalmente ripetitivo, mostrando in questo modo i casi favorevoli e sfavorevoli per entrambi gli algoritmi.\\
+Il caso 8 infine mostra in modo isolato il tempo di calcolo della funzione dei prefissi dell'algoritmo KMP al variare della lunghezza del pattern.\\
+
+\subsection{Misurazioni}
+
 
 \end{document}
