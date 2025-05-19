@@ -90,11 +90,11 @@ class MatcherTestRunner:
                     naive_ys.append(naive_sum / repetitions)
                     kmp_ys.append(kmp_sum / repetitions)
 
-            elif vary == "worst_case":
+            if vary == "worst_case":
                 title = "Numero di confronti nel caso peggiore (pattern quasi uguale al testo)"
                 for length in range(100, 5001, 100):
                     text = "A" * length
-                    pattern = "A" * (length - 1) + "B"
+                    pattern = "A" * (length // 2) + "B"
                     naive_sum = 0
                     kmp_sum = 0
                     for _ in range(repetitions):

@@ -78,7 +78,10 @@
 \newpage
 \renewcommand{\contentsname}{Indice}
 \tableofcontents
+\addcontentsline{toc}{section}{Elenco delle figure}
+\listoffigures
 \pagenumbering{arabic}
+
 \newpage
 \section{Introduzione generale}
 \subsection{Breve descrizione dello svolgimento degli esercizi}
@@ -389,6 +392,109 @@ Infine riporto l'implementazione della parte di codice necessaria a generare i g
 \end{figure}
 \noindent Da notare come sono presenti due if per poter, nel primo, generare un grafico con visualizzato solamente l'algoritmo KMP mentre, nel secondo, poter visualizzare tutti e quattro i risultati del relativo test anziché i classici due.
 
+\newpage
 \subsection{Risultati sperimentali e commenti analitici}
+In questo paragrafo andremo ad analizzare più nel dettaglio i singoli test e a visualizzare e commentare i relativi grafici.
+\begin{itemize}
+    \item \textbf{Tempo di esecuzione al variare della lunghezza del testo}\\
+        In questo test osserviamo il tempo di esecuzione al variare della lunghezza del testo. Il pattern è fissato mentre il testo aumenta in lunghezza. Dal grafico in figura \ref{fig:test-1} possiamo notare come l'algoritmo KMP abbia una crescita più lineare rispetto all'algoritmo ``ingenuo''. Inoltre notiamo anche il fatto che all'aumentare della lunghezza del testo l'algoritmo KMP è più veloce dell'algoritmo ``ingenuo'' nel trovare le occorrenze del pattern.
+        \begin{figure}[H]
+            \centering
+            \includegraphics[width=0.8\textwidth]{img/Test1.png}
+            \includegraphics[width=0.8\textwidth]{img/Graph1.png}
+            \caption{Tempo di esecuzione al variare della lunghezza del testo}
+            \label{fig:test-1}
+        \end{figure}
+    \newpage
+    \item \textbf{Numero di confronti al variare della lunghezza del testo}\\
+        In questo test osserviamo il numero di confronti effettuati al variare della lunghezza del testo. Il pattern è fissato mentre il testo aumenta in lunghezza. Dal grafico in figura \ref{fig:test-2} possiamo notare come l'algoritmo KMP abbia la capacità di evitare confronti ridondanti risultando in una crescita più lenta rispetto all'algoritmo ``ingenuo'' che cresce più rapidamente, ovvero effettua più confronti per torvare tutte le occorrenze del pattern.
+        \begin{figure}[H]
+            \centering
+            \includegraphics[width=0.8\textwidth]{img/Test2.png}
+            \includegraphics[width=0.8\textwidth]{img/Graph2.png}
+            \caption{Numero di confronti al variare della lunghezza del testo}
+            \label{fig:test-2}
+        \end{figure}
+    \newpage
+    \item \textbf{Numero di confronti nel caso peggiore (pattern quasi uguale al testo)}\\
+        In questo test osserviamo il numero di confronti effettuati nel caso peggiore, ovvero quando il pattern è quasi uguale al testo. In questo caso sia il pattern che il testo aumentano in lunghezza. Dal grafico in figura \ref{fig:test-3} possiamo notare come l'algoritmo ``ingenuo'' abbia una crescita esponenziale rispetto all'algoritmo KMP che rimane lineare. Ciò è nuovamente dovuto alla capacità dell'algoritmo KMP di evitare confronti ridondanti, mentre l'algoritmo ``ingenuo'' è costretto a confrontare ogni carattere del pattern con ogni carattere del testo.
+        \begin{figure}[H]
+            \centering
+            \includegraphics[width=0.8\textwidth]{img/Test3.png}
+            \includegraphics[width=0.8\textwidth]{img/Graph3.png}
+            \caption{Numero di confronti nel caso peggiore (pattern quasi uguale al testo)}
+            \label{fig:test-3}
+        \end{figure}
+    \newpage
+    \item \textbf{Numero di confronti con match sovrapposti}\\
+        In questo test osserviamo il numero di confronti effettuati con match sovrapposti. In questo caso il pattern rimane costante mentre il testo aumenta in lunghezza. Dal grafico in figura \ref{fig:test-4} notiamo nuovamente che l'algoritmo KMP ha una crescita più lenta rispetto all'algoritmo ``ingenuo''. In questo caso KMP è molto più efficiente andando a evitare controlli già effettuati.
+        \begin{figure}[H]
+            \centering
+            \includegraphics[width=0.8\textwidth]{img/Test4.png}
+            \includegraphics[width=0.8\textwidth]{img/Graph4.png}
+            \caption{Numero di confronti con match sovrapposti}
+            \label{fig:test-4}
+        \end{figure}
+    \newpage
+    \item \textbf{Tempo di esecuzione al variare della lunghezza del pattern}\\
+        In questo test osserviamo il tempo di esecuzione al variare della lunghezza del pattern. In questo caso il pattern aumenta in lunghezza mentre il testo rimane costante. Dal grafico in figura \ref{fig:test-5} vediamo che l'aumentare della lunghezza del pattern comporta un aumento del tempo di esecuzione notevole per l'algoritmo ``ingenuo'' a differenza del KMP che in confronto ha una crescita quasi impercettibile. 
+        \begin{figure}[H]
+            \centering
+            \includegraphics[width=0.8\textwidth]{img/Test5.png}
+            \includegraphics[width=0.8\textwidth]{img/Graph5.png}
+            \caption{Tempo di esecuzione al variare della lunghezza del pattern}
+            \label{fig:test-5}
+        \end{figure}
+    \newpage
+    \item \textbf{Numero di confronti in funzione della densità di match}\\
+        In questo test osserviamo come la frequenza di occorrenze del pattern nel testo influisca sull'efficienza. In questo caso il pattern rimane costante mentre il testo viene calcolato sulla base della densità di occorrenze. Dal grafico in figura \ref{fig:test-6} osserviamo che per bassa densità di occorrenze entrambi gli algoritmi facciano molti confronti mentre all'aumentare della densità l'algoritmo KMP riesca a diminuire più rapidamente il numero di confronti.
+        \begin{figure}[H]
+            \centering
+            \includegraphics[width=0.8\textwidth]{img/Test6.png}
+            \includegraphics[width=0.8\textwidth]{img/Graph6.png}
+            \caption{Numero di confronti in funzione della densità di match}
+            \label{fig:test-6}
+        \end{figure}
+    \newpage
+    \item \textbf{Tempo di esecuzione su testo casuale e ripetitivo}\\
+        In questo test analizziamo il tempo di esecuzione sia su un testo totalmente casuale che su uno ripetitivo. In questo caso il pattern rimane costante mentre, una volta, il testo è calcolato in modo randomico, nell'altra viene ripetuto per una certa lunghezza. Dal grafico in figura \ref{fig:test-7}, in cui sono riportati i grafici per i quattro casi, notiamo come l'algoritmo KMP riesca a mantenere un tempo di esecuzione molto più basso in entrambi i casi.
+        \begin{figure}[H]
+            \centering
+            \includegraphics[width=0.8\textwidth]{img/Test7.png}
+            \includegraphics[width=0.8\textwidth]{img/Graph7.png}
+            \caption{Tempo di esecuzione su testo casuale e ripetitivo}
+            \label{fig:test-7}
+        \end{figure}
+    \newpage
+    \item \textbf{Tempo di preprocessing KMP al variare della lunghezza del pattern}\\
+        In questo ultimo test studiamo il tempo di preprocessing dell'algoritmo KMP al variare della lunghezza del pattern. Vediamo quindi come il pattern aumenti in lunghezza. Dal grafico in figura \ref{fig:test-8}, in cui è ovviamente riportato solo la parte dell'algoritmo KMP, notiamo come il tempo di preprocessing cresca approssimativamente in modo lineare, ciò è dovuto al costo anch'esso lineare della funzione dei prefissi. Il rumore presente nel grafico è dovuto ai tempi molto piccoli di esecuzione.
+        \begin{figure}[H]
+            \centering
+            \includegraphics[width=0.8\textwidth]{img/Test8.png}
+            \includegraphics[width=0.8\textwidth]{img/Graph8.png}
+            \caption{Tempo di preprocessing KMP al variare della lunghezza del pattern}
+            \label{fig:test-8}
+        \end{figure}
+\end{itemize}
+
+\newpage
+\subsection{Tesi e sintesi finale}
+A seguito dei nostri risultati e analisi nella sezione 4.3, possiamo trarre le seguenti conclusioni:
+\begin{itemize}
+    \item Nei test su testi di grandi dimensioni e pattern lunghi o ripetitivi, l'algoritmo Knuth-Morris-Pratt ha dimostrato un costo lineare $\Theta(n + m)$ sia in termini di tempo che di confronti.\\
+    L'algoritmo Naïve, al contrario, cresce quadraticamente nel worst-case $O((n - m + 1) \cdot m)$, rendendosi rapidamente non praticabile al crescere di \textit{n} o \textit{m}.
+    \item Con pattern quasi identico al testo (test worst-case), l'algoritmo ``ingenuo'' ha effettuato un numero di confronti prossimo a \textit{$n \cdot m$} generando un grafico esponenziale mentre KMP ha mantenuto un andamento lineare, confermando la robustezza della funzione dei prefissi nel ridurre i confronti ridondanti.
+    \item Nei testi con molti match sovrapposti, l'algoritmo ``ingenuo'' ha ripetuto numerose volte gli stessi controlli, mentre KMP ha sfruttato le informazioni già calcolate, riducendo drasticamente i confronti ridondanti.
+    \item Il tempo di esecuzione del Naïve aumenta sensibilmente all'aumentare di \textit{m}, mentre KMP rimane quasi piatto: il pattern più lungo incide su KMP solo nella fase di preprocessing $O(m)$, trascurabile in confronto alla fase di matching $O(n)$.
+    \item Con densità di match variabile o con testi casuali e ripetitivi, KMP ha mostrato prestazioni migliori e più stabili. L'algoritmo ``ingenuo'' ha invece performato su testi casuali con pochi match.
+\end{itemize}
+In conclusione, gli esperimenti effettuati confermano le previsioni teoriche: KMP offre prestazioni superiori e più prevedibili, mentre l'algoritmo ``ingenuo'' rimane una valida alternativa solo per testi e pattern di piccole dimensioni o in assenza di occorrenze.
+
+\newpage
+\addcontentsline{toc}{section}{Riferimenti bibliografici}
+\begin{thebibliography}{9}
+\bibitem{cormen}
+TThomas H. Cormen, Charles E. Leiserson, Ronald L. Rivest, Clifford Stein (2009) Introduzioneagli algoritmi e strutture dati Terza edizione, McGraw Hill.21
+\end{thebibliography}
 
 \end{document}
