@@ -348,6 +348,47 @@ Il test 7 confronta l'efficienza su un testo completamente casuale e uno totalme
 Il caso 8 infine mostra in modo isolato il tempo di calcolo della funzione dei prefissi dell'algoritmo KMP al variare della lunghezza del pattern.\\
 
 \subsection{Misurazioni}
+Le misurazioni dei tempi di eleborazione degli algoritmi sono state effettuate nel metodo \textbf{run\_test} della classe \textbf{MatcherTestRunner}. Per poterle eseguire è stato utilizzato il modulo \textbf{time} importato all'inizio del file \textit{string\_matcher\_runner.py}.\\
+Vediamo adesso nel dettaglio come è stata effettuata la misurazione del tempo:
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{img/Tempo.png}
+    \caption{Misurazione del tempo}
+    \label{fig:time-measurement}
+\end{figure}
+\begin{enumerate}
+    \item \textbf{Ciclo for}: necessario a scorrere tra tutti gli algoritmi di string matching implementati nel progetto per poter poi fare le misurazioni e poter stampare i relativi risultati.
+    \item \textbf{Inizializzazione}: attraverso l'utilizzo del modulo \textbf{time} viene inizializzato il tempo di inizio della misurazione e salvato nella variabile \textit{start}.
+    \item \textbf{Chiamata degli algoritmi}: viene chiamato il metodo \textbf{search} degli string matcher implementati, passando il testo e il pattern da cercare. Gli output vegono poi salvati nelle variabili \textit{result} e \textit{comparisons}.
+    \item \textbf{Fine misurazione}: viene poi calcolato il tempo di esecuzione sottraendo il tempo di inizio salvato nella variabile \textit{start} dal tempo attuale. Il risultato viene poi salvato nella variabile \textit{duration}.
+\end{enumerate}
+Nella seguente figura è riportata l'implementazione di uno dei test per poter descrivere la struttura del codice:
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{img/Test.png}
+    \caption{Implementazione di uno dei test}
+    \label{fig:test-implementation}
+\end{figure}
+\begin{enumerate}
+    \item Il test inizia con un if che va a controllare quale caso di test si sta eseguendo.
+    \item Successivamente è riportato il titolo del test che andrà ad apparire in alto nel grafico.
+    \item Viene ora definito il pattern che sarà ricercato nel testo definito nelle successive righe.
+    \item Il for è necessario per variare la lunghezza del testo stesso in modo da poter generare in questo modo il grafico.
+    \item Viene di seguito quindi definito il testo da utilizzare per l'esperimento sfruttando la variabile \textit{length} definita nel for. Notiamo come la lunghezza viene fatta modulo 4, ovvero la lunghezza base del testo, per poter ottenere un testo complessivo la cui lunghezza totale è il più vicino possibile alla variabile \textit{length}.
+    \item Sono poi definite le variabili somma per i relativi algoritmi necessarie poi per poter fare la media dei risultati. Quindi viene fatto un ciclo for che ripete il test per un numero di volte pari alla variabile \textit{repetitions} grazie al quale vengono rimossi dal grafico eventuali picchi anomali dovuti alla ricerca del pattern molto veloce.
+    \item Adesso viene fatto l'effettivo test andando a chiamare il metodo \textbf{run\_tests} passando dunque il pattern e il testo sopra definiti.
+    \item In questo for vengono salvati nelle relative variabili somma i risultati (in questo caso i tempi) di un singolo test.
+    \item Infine viene impostata nelle ascisse una variabile da analizzare (la lunghezza del testo in questo caso) e nelle ordinate la media dei risultati dei vari test (media dei tempi per questo test), sia per l'algoritmo ``ingenuo'' che per il KMP per poter così visualizzare il confronto sullo stesso grafico.
+\end{enumerate}
+Infine riporto l'implementazione della parte di codice necessaria a generare i grafici:
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{img/Plot_graphs.png}
+    \caption{Implementazione delle operazioni per creare i grafici}
+    \label{fig:plot-graphs}
+\end{figure}
+\noindent Da notare come sono presenti due if per poter, nel primo, generare un grafico con visualizzato solamente l'algoritmo KMP mentre, nel secondo, poter visualizzare tutti e quattro i risultati del relativo test anziché i classici due.
 
+\subsection{Risultati sperimentali e commenti analitici}
 
 \end{document}

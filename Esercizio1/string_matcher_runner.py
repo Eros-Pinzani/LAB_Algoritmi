@@ -1,5 +1,4 @@
 import time
-import string
 import random
 import os
 import matplotlib.pyplot as plt
