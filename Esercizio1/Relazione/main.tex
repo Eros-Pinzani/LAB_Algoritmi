@@ -269,7 +269,7 @@ Analizziamo adesso gli algoritmi di string matching ``\textbf{ingenuo}'' e \text
 \end{itemize}
 I test verranno effettuati su più scenari andando a variare la lunghezza del testo e del pattern, la densità delle occorrenze e la composizione stessa del pattern e del testo.
 \newpage
-\noindent Di seguito è rappresentata la tabella riassuntiva delle complessità degli algoritmi analizzati:
+\noindent Di seguito nella figura \ref{tab:complexity-table} è rappresentata la tabella riassuntiva delle complessità degli algoritmi analizzati:
 \begin{figure}[H]
     \begin{table}[H]
         \centering
@@ -352,7 +352,7 @@ Il caso 8 infine mostra in modo isolato il tempo di calcolo della funzione dei p
 
 \subsection{Misurazioni}
 Le misurazioni dei tempi di eleborazione degli algoritmi sono state effettuate nel metodo \textbf{run\_test} della classe \textbf{MatcherTestRunner}. Per poterle eseguire è stato utilizzato il modulo \textbf{time} importato all'inizio del file \textit{string\_matcher\_runner.py}.\\
-Vediamo adesso nel dettaglio come è stata effettuata la misurazione del tempo:
+Vediamo adesso nel dettaglio in figura \ref{fig:time-measurement} come è stata effettuata la misurazione del tempo:
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.8\textwidth]{img/Tempo.png}
@@ -365,7 +365,7 @@ Vediamo adesso nel dettaglio come è stata effettuata la misurazione del tempo:
     \item \textbf{Chiamata degli algoritmi}: viene chiamato il metodo \textbf{search} degli string matcher implementati, passando il testo e il pattern da cercare. Gli output vegono poi salvati nelle variabili \textit{result} e \textit{comparisons}.
     \item \textbf{Fine misurazione}: viene poi calcolato il tempo di esecuzione sottraendo il tempo di inizio salvato nella variabile \textit{start} dal tempo attuale. Il risultato viene poi salvato nella variabile \textit{duration}.
 \end{enumerate}
-Nella seguente figura è riportata l'implementazione di uno dei test per poter descrivere la struttura del codice:
+Nella seguente figura \ref{fig:test-implementation} è riportata l'implementazione di uno dei test per poter descrivere la struttura del codice:
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.8\textwidth]{img/Test.png}
@@ -383,7 +383,7 @@ Nella seguente figura è riportata l'implementazione di uno dei test per poter d
     \item In questo for vengono salvati nelle relative variabili somma i risultati (in questo caso i tempi) di un singolo test.
     \item Infine viene impostata nelle ascisse una variabile da analizzare (la lunghezza del testo in questo caso) e nelle ordinate la media dei risultati dei vari test (media dei tempi per questo test), sia per l'algoritmo ``ingenuo'' che per il KMP per poter così visualizzare il confronto sullo stesso grafico.
 \end{enumerate}
-Infine riporto l'implementazione della parte di codice necessaria a generare i grafici:
+Infine riporto, in figura \ref{fig:plot-graphs}, l'implementazione della parte di codice necessaria a generare i grafici:
 \begin{figure}[H]
     \centering
     \includegraphics[width=1\textwidth]{img/Plot_graphs.png}
