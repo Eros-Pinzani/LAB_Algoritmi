@@ -239,7 +239,7 @@ La funzione prefisso $\pi$ associa ad ogni posizione \textit{i} del pattern il n
               \item Viene poi calcolata la funzione dei prefissi per il pattern e salvato il risultato nella variabile $\pi$.
               \item Viene inizializzata la variabile \textit{q}, cioè il numero di caratteri del pattern che sono stati trovati nel testo.
               \item Si scorre il testo da 1 a \textit{n}, analizzando ogni carattere.
-              \item Se viene trovata una discordanza tra il prossimo carattere del pattern e quello corrente del testo, viene utilizzata $\pi$ per saltare ad una posizione precedente del pattern che potrebbe produrre un pattern evitando confronti ridondanti.
+              \item In caso di discordanza tra il carattere atteso e quello del testo, $\pi$ permette di saltare a una posizione precedente nella ricerca, evitando confronti inutili e riprendendo dal prefisso più lungo già verificato.
               \item Se viene trovata una corrispondenza tra il prossimo carattere del pattern e quello corrente del testo, \textit{q} viene incrementato di 1, indicando che è stato trovato un nuovo carattere del pattern.
               \item Se \textit{q} è uguale alla lunghezza del pattern, significa che è stata trovata un'occorrenza completa del pattern nel testo. In tal caso, viene stampata la posizione in cui è stata trovata l'occorrenza e \textit{q} viene aggiornato al valore di $\pi[q]$, cioè al valore del precedente prefisso memorizzato per poter continuare la ricerca da dove è possibile trovare un nuovo match.
           \end{enumerate}
@@ -263,7 +263,7 @@ La funzione prefisso $\pi$ associa ad ogni posizione \textit{i} del pattern il n
 \subsection{Assunti ed ipotesi}
 Analizziamo adesso gli algoritmi di string matching ``\textbf{ingenuo}'' e \textbf{KMP} dal punto di vista della complessità: entrambi riescono a trovare tutte le occorrenze di un pattern all'interno di un testo ma a causa dei diversi approcci le relative complessità differiscono notevolmente tra loro. In particolare ci concentriamo sull'osservare il numero di confronti e il tempo di esecuzione.
 \begin{itemize}
-    \item \textbf{Algoritmo ``ingenuo''}: confronta il pattern con ogni possibile sottostringa nel testo. Ciò comporta, nel caso peggiore, un numero di confronti pari a $O((n - m + 1) \cdot m)$, dove \textit{n} è la lunghezza del testo e \textit{m} è la lunghezza del pattern. Tuttavia in alcuni casi quali pattern breve o assenza di occorrenze l'algoritmo può risultare veloce.
+    \item \textbf{Algoritmo ``ingenuo''}: confronta il pattern con ogni possibile sottostringa nel testo. Ciò comporta, nel caso peggiore, un numero di confronti pari a $O((n - m + 1) \cdot m)$, dove \textit{n} è la lunghezza del testo e \textit{m} è la lunghezza del pattern. Tuttavia in alcuni casi, quali pattern breve o assenza di occorrenze, l'algoritmo può risultare veloce.
     \item \textbf{Algoritmo KMP}: utilizza la funzione dei prefissi per evitare confronti ridondanti. La complessità temporale dell'algoritmo nel caso medio e nel peggiore è $\Theta(n + m)$, cioè una complessità \textbf{lineare}, dove \textit{n} è la lunghezza del testo e \textit{m} è la lunghezza del pattern. Questo lo rende molto più efficiente rispetto all'algoritmo ``ingenuo'' in casi di pattern ripetitivi o con molte occorrenze nel testo.
 \end{itemize}
 I test verranno effettuati su più scenari andando a variare la lunghezza del testo e del pattern, la densità delle occorrenze e la composizione stessa del pattern e del testo.
@@ -287,7 +287,7 @@ I test verranno effettuati su più scenari andando a variare la lunghezza del te
 \section{Documentazione del codice}
 \subsection{Schema del contenuto e interazione tra i moduli}
 Per svolgere i nostri esperimenti ho, prima di tutto, scritto il codice degli algoritmi a cui faremo riferimento. In questo caso le classi hanno nome \textbf{NaiveMatcher} per l'algoritmo ``ingenuo'' e \textbf{KMPMatcher} per quello KMP. La classe \textbf{StringMatcher} è una classe astratta da cui ereditano le due classi precedenti, attraverso questa posso chiamare il metodo \textbf{\textit{search}} per effettuare la ricerca del pattern all'interno del testo.\\
-Ho inoltre implementato la classe \textbf{MatcherTestRunner} che si occupa di chiamare gli algoritmi passando i giusti dati, tenere conto del tempo impiegato e salvare i risultati. Nello stesso pacchetto di quest'ultima classe ho implementato anche la funzione \textbf{\textit{generate\_custom\_graphs}} che va a effetturare gli effettivi test richiamando la classe \textbf{MatcherTestRunner} e genera i relativi grafici.
+Ho inoltre implementato la classe \textbf{MatcherTestRunner} che si occupa di chiamare gli algoritmi passando i giusti dati, tenere conto del tempo impiegato e salvare i risultati. In questa classe ho implementato anche il metodo \textbf{\textit{generate\_custom\_graphs}} che va a effetturare gli effettivi test e genera i relativi grafici.
 \begin{figure}[H]
     \centering
     \includegraphics[width=1\textwidth]{img/UML.png}
@@ -322,7 +322,7 @@ In questa parte descriverò le funzionalità di ogni metodo delle classi di cui 
     \begin{itemize}
         \item \textbf{\_\_init\_\_(self, text, pattern)}:inizializza l'istanza con il testo e il pattern da cercare e prepara gli oggetti per gli algoritmi di string matching.
         \item \textbf{run\_test(self)}: È il metodo principale che esegue il test di string matching. Chiama i metodi \textbf{search} degli oggetti \textbf{NaiveMatcher} passando il testo e il pattern. Registra quindi il tempo impiegato per ciascun algoritmo, il numero di confronti effettuati e il numero di occorrenze trovate. Restituisce un dizionario con i risultati per entrambi gli algoritmi da utilizzare per la generazione dei grafici.
-        \item \textbf{generate\_custom\_graphs()}: Questo metodo genera i grafici per visualizzare i risultati dei test. Al suo interno sono contenuti gli effettivi test da eseguire che vanno a definire il testo e il pattern da utilizzare nella ricerca. Chiama quindi per ogni test il metodo \textbf{run\_test}. Inoltre ogni caso ha al suo interno due cicli for: uno necessario per variare le dimensioni del test o del pattern in modo da ottenere un grafico più completo, l'altro per fare una media dei risultati ottenuti in modo da eliminare dal grafico finale eventuali picchi dovuti al fatto che i tempi di ricerca sono molto piccoli.
+        \item \textbf{generate\_custom\_graphs()}: Questo metodo genera i grafici per visualizzare i risultati dei test. Al suo interno sono contenuti gli effettivi test da eseguire che vanno a definire il testo e il pattern da utilizzare nella ricerca. Chiama quindi per ogni test il metodo \textbf{run\_test}. Inoltre ogni caso ha al suo interno due cicli for: uno necessario per variare le dimensioni del testo o del pattern in modo da ottenere un grafico più completo, l'altro per fare una media dei risultati ottenuti in modo da eliminare dal grafico finale eventuali picchi dovuti al fatto che i tempi di ricerca sono molto piccoli.
     \end{itemize}
 \end{itemize}
 
@@ -481,13 +481,13 @@ In questo paragrafo andremo ad analizzare più nel dettaglio i singoli test e a 
 A seguito dei nostri risultati e analisi nella sezione 4.3, possiamo trarre le seguenti conclusioni:
 \begin{itemize}
     \item Nei test su testi di grandi dimensioni e pattern lunghi o ripetitivi, l'algoritmo Knuth-Morris-Pratt ha dimostrato un costo lineare $\Theta(n + m)$ sia in termini di tempo che di confronti.\\
-    L'algoritmo Naïve, al contrario, cresce quadraticamente nel worst-case $O((n - m + 1) \cdot m)$, rendendosi rapidamente non praticabile al crescere di \textit{n} o \textit{m}.
-    \item Con pattern quasi identico al testo (test worst-case), l'algoritmo ``ingenuo'' ha effettuato un numero di confronti prossimo a \textit{$n \cdot m$} generando un grafico esponenziale mentre KMP ha mantenuto un andamento lineare, confermando la robustezza della funzione dei prefissi nel ridurre i confronti ridondanti.
+    L'algoritmo ``Ingenuo'', al contrario, cresce quadraticamente nel caso peggiore $O((n - m + 1) \cdot m)$, rendendosi rapidamente non praticabile al crescere di \textit{n} o \textit{m}.
+    \item Con pattern quasi identico al testo (test caso peggiore), l'algoritmo ``ingenuo'' ha effettuato un numero di confronti prossimo a \textit{$n \cdot m$} generando un grafico esponenziale mentre KMP ha mantenuto un andamento lineare, confermando la robustezza della funzione dei prefissi nel ridurre i confronti ridondanti.
     \item Nei testi con molti match sovrapposti, l'algoritmo ``ingenuo'' ha ripetuto numerose volte gli stessi controlli, mentre KMP ha sfruttato le informazioni già calcolate, riducendo drasticamente i confronti ridondanti.
-    \item Il tempo di esecuzione del Naïve aumenta sensibilmente all'aumentare di \textit{m}, mentre KMP rimane quasi piatto: il pattern più lungo incide su KMP solo nella fase di preprocessing $O(m)$, trascurabile in confronto alla fase di matching $O(n)$.
+    \item Il tempo di esecuzione dell'algoritmo ``Ingenuo'' aumenta sensibilmente all'aumentare di \textit{m}, mentre KMP rimane quasi piatto: il pattern più lungo incide su KMP solo nella fase di preprocessing $O(m)$, trascurabile in confronto alla fase di matching $O(n)$.
     \item Con densità di match variabile o con testi casuali e ripetitivi, KMP ha mostrato prestazioni migliori e più stabili. L'algoritmo ``ingenuo'' ha invece performato su testi casuali con pochi match.
 \end{itemize}
-In conclusione, gli esperimenti effettuati confermano le previsioni teoriche: KMP offre prestazioni superiori e più prevedibili, mentre l'algoritmo ``ingenuo'' rimane una valida alternativa solo per testi e pattern di piccole dimensioni o in assenza di occorrenze.
+In conclusione, gli esperimenti effettuati confermano le previsioni teoriche: KMP è la scelta migliore in quanto offre prestazioni superiori e più prevedibili, mentre l'algoritmo ``ingenuo'' rimane una valida alternativa solamente per testi e pattern di piccole dimensioni o in assenza di occorrenze.
 
 \newpage
 \addcontentsline{toc}{section}{Riferimenti bibliografici}
